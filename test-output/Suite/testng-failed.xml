@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Suite]">
+  <test name="Test(failed)">
+    <classes>
+      <class name="com.claraanalytics.test.SentryTest">
+        <methods>
+          <include name="PUT_UpdateRole"/>
+          <include name="POST_CreateRole"/>
+          <include name="DELETE_Role"/>
+          <include name="GET_Role"/>
+        </methods>
+      </class> <!-- com.claraanalytics.test.SentryTest -->
+    </classes>
+  </test> <!-- Test(failed) -->
+</suite> <!-- Failed suite [Suite] -->
