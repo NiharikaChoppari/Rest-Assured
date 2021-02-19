@@ -7,16 +7,14 @@ import com.claraanalytics.main.Utils;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
-public class RoleTest extends BaseTest{
+public class ResourceTest extends BaseTest {
 
 	Response JSONresponse;
 	String baseURI;
-	String role_ID;
+	String resource_ID;
 	JsonPath jsonpath;
 	String reqURL;
 	String JWTTOKEN;
-	String permissionId1;
-	String permissionId2;
 	String serviceId;
 	String requestPayload;
 	String contentType = "application/json";
@@ -28,46 +26,45 @@ public class RoleTest extends BaseTest{
 		baseURI = BaseTest.baseURI;
 		JWTTOKEN = BaseTest.JWTTOKEN;
 		serviceId = BaseTest.serviceId;
-		permissionId1 = BaseTest.permissionId1;
-		permissionId2 = BaseTest.permissionId2;
 	}
 
 	@Test(priority = 1)
-	void createRole() {
+	void createResource() {
 
-		requestPayload = "{\"name\":\"Test_Role\",\"permissionIds\":[\"" + permissionId1 + "\"]}";
-		reqURL = baseURI + "/api/v1/service/" + serviceId + "/role";
+		requestPayload = "{\"name\":\"ResourceTest\",\"permissionInfo\":[{\"name\":\"default\",\"bitMask\":15}]}";
+		reqURL = baseURI + "/api/v1/service/" + serviceId + "/resource";
 
 		JSONresponse = obj.post(requestPayload, reqURL, contentType, JWTTOKEN);
 		jsonpath = obj.parseJSON(JSONresponse);
 
-		role_ID = jsonpath.get("data");
+		resource_ID = jsonpath.get("data");
 		System.out.println(JSONresponse.asString());
 		Assert.assertEquals(JSONresponse.getStatusCode(), 200, "Status code is not 200");
 		Assert.assertEquals(jsonpath.get("status"), "SUCCESS", "Response status is not SUCCESS");
-		System.out.println("role creation");
+		System.out.println("Resource creation");
 	}
 
 	@Test(priority = 2)
-	void updateRole() {
+	void updateResource() {
 
-		requestPayload = "{\"permissionIds\":[\"" + permissionId1 + "\",\"" + permissionId2 + "\"]}";
-		reqURL = baseURI + "/api/v1/service/" + serviceId + "/role/" + role_ID;
+		requestPayload = "{\"name\":\"Test\",\"permissionInfo\":[{\"id\":\"" + resource_ID
+				+ "\",\"createdBy\":\"niharika.c_abc\",\"createdOn\":1611309709000,\"updatedBy\":\"niharika.c_abc\",\"updatedOn\":1611309709000,\"bitMask\":15,\"name\":\"default\"}]}";
+		reqURL = baseURI + "/api/v1/service/" + serviceId + "/resource/" + resource_ID;
 
 		JSONresponse = obj.put(requestPayload, reqURL, contentType, JWTTOKEN);
 		jsonpath = obj.parseJSON(JSONresponse);
 
+		resource_ID = jsonpath.get("data");
 		System.out.println(JSONresponse.asString());
 		Assert.assertEquals(JSONresponse.getStatusCode(), 200, "Status code is not 200");
 		Assert.assertEquals(jsonpath.get("status"), "SUCCESS", "Response status is not SUCCESS");
-		System.out.println("role updation");
-
+		System.out.println("Resource updation");
 	}
 
 	@Test(priority = 3)
-	void getRole() {
+	void getResource() {
 
-		reqURL = baseURI + "/api/v1/service/" + serviceId + "/role/" + role_ID;
+		reqURL = baseURI + "/api/v1/service/" + serviceId + "/resource/" + resource_ID;
 
 		JSONresponse = obj.get(reqURL, contentType, JWTTOKEN);
 		jsonpath = obj.parseJSON(JSONresponse);
@@ -75,14 +72,13 @@ public class RoleTest extends BaseTest{
 		System.out.println(JSONresponse.asString());
 		Assert.assertEquals(JSONresponse.getStatusCode(), 200, "Status code is not 200");
 		Assert.assertEquals(jsonpath.get("status"), "SUCCESS", "Response status is not SUCCESS");
-		System.out.println("role details");
-
+		System.out.println("Resource details");
 	}
 
 	@Test(priority = 4)
-	void deleteRole() {
+	void deleteResource() {
 
-		reqURL = baseURI + "/api/v1/service/" + serviceId + "/role/" + role_ID;
+		reqURL = baseURI + "/api/v1/service/" + serviceId + "/resource/" + resource_ID;
 
 		JSONresponse = obj.delete(reqURL, contentType, JWTTOKEN);
 		jsonpath = obj.parseJSON(JSONresponse);
@@ -90,9 +86,8 @@ public class RoleTest extends BaseTest{
 		System.out.println(JSONresponse.asString());
 		Assert.assertEquals(JSONresponse.getStatusCode(), 200, "Status code is not 200");
 		Assert.assertEquals(jsonpath.get("status"), "SUCCESS", "Response status is not SUCCESS");
-		Assert.assertEquals(jsonpath.get("data"), "Test_Role deleted successfully from service " + serviceId,
-				"Role couldnot be deleted");
-		System.out.println("role deletion");
-
+		Assert.assertEquals(jsonpath.get("data"), "Test deleted successfully", "Resource couldnot be deleted");
+		System.out.println("Resource deletion");
 	}
+
 }

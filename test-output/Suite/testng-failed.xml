@@ -3,14 +3,14 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Suite]">
   <test name="Test(failed)">
     <classes>
-      <class name="com.claraanalytics.test.SentryTest">
+      <class name="com.claraanalytics.test.RoleTest">
         <methods>
           <include name="PUT_UpdateRole"/>
+          <include name="GET_Role"/>
           <include name="POST_CreateRole"/>
           <include name="DELETE_Role"/>
-          <include name="GET_Role"/>
         </methods>
-      </class> <!-- com.claraanalytics.test.SentryTest -->
+      </class> <!-- com.claraanalytics.test.RoleTest -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite] -->
